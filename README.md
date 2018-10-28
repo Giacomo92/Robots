@@ -49,17 +49,17 @@ The quickest way to use Robots is to just setup a callback-style route for `robo
 
 Route::get('robots.txt', function() {
 
-    // If on the live server, serve a nice, welcoming robots.txt.
-    if (App::environment() == 'production')
-    {
-        Robots::addUserAgent('*');
-        Robots::addSitemap('sitemap.xml');
-    } else {
-        // If you're on any other server, tell everyone to go away.
-        Robots::addDisallow('*');
-    }
+	$robots = new Robots;
+	// If on the live server, serve a nice, welcoming robots.txt.
+	if (App::environment() == 'production')
+	{
+		$robots->addUserAgent('*');
+	} else {
+		// If you're on any other server, tell everyone to go away.
+		$robots->addDisallow('*');
+	}
 
-    return Response::make(Robots::generate(), 200, array('Content-Type' => 'text/plain'));
+	return response($robots->generate(), 200)->header('Content-Type', 'text/plain');
 });
 ```
 
